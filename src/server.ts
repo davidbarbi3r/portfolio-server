@@ -3,6 +3,8 @@ import express from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
 import Logging from './library/Logging';
+import postRoutes from "./routes/Post"
+import userRoutes from "./routes/User"
 
 const router = express();
 
@@ -49,6 +51,8 @@ const StartServer = () => {
     });
 
     // Routes
+    router.use("/posts", postRoutes)
+    router.use("/users", userRoutes)
 
     // Healthcheck
     router.get('/miaou', (req, res, next) => res.status(200).json({ tikiton: 'mawouuu' }));
@@ -63,4 +67,5 @@ const StartServer = () => {
 
     http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}.`));
 };
+
 
