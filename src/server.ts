@@ -5,8 +5,15 @@ import mongoose from 'mongoose';
 import Logging from './library/Logging';
 import postRoutes from "./routes/Post"
 import userRoutes from "./routes/User"
+import firebaseAdmin from "firebase-admin"
 
 const router = express();
+
+// Connect to firebase
+let serviceAccountKey = require("./config/serviceAccountKey.json")
+firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(serviceAccountKey)
+})
 
 // Connection to database
 mongoose
@@ -34,6 +41,8 @@ const StartServer = () => {
 
         next();
     });
+
+    // Parse body
     router.use(express.urlencoded({ extended: true }));
     router.use(express.json());
 

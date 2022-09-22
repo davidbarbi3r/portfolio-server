@@ -14,5 +14,5 @@ export const config = {
     }, 
     server: {
         port: SERVER_PORT
-    }
+    },
 }

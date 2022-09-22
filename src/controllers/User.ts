@@ -1,19 +1,65 @@
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
+import Logging from '../library/Logging';
 import User from '../models/User';
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
-  const { name } = req.body;
+  const { uid, name } = req.body;
+  const fire_token = res.locals.fire_token;
 
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
+    uid,
     name,
   });
 
   return user
     .save()
-    .then((user) => res.status(201).json({ user }))
+    .then((user) => res.status(201).json({ user, fire_token }))
     .catch((error) => res.status(500).json({ error }));
+};
+
+const loginUser = (req: Request, res: Response, next: NextFunction) => {
+  Logging.info('Logging in user ...');
+
+  const { uid } = req.body;
+  const fire_token = res.locals.fire_token;
+
+  return User.findOne({ uid })
+    .then((user) => {
+      if (user) {
+        Logging.info(`User ${uid} found, signing in...`);
+        return res.status(200).json({ user, fire_token });
+      } else {
+        Logging.info(`User ${uid} not found, register...`);
+        return createUser(req, res, next);
+      }
+    })
+    .catch((error) => {
+      Logging.error(error);
+      return res.status(500).json({
+        error,
+      });
+    });
+};
+
+const validateUser = (req: Request, res: Response, next: NextFunction) => {
+  Logging.info('Token validated, returning user ...');
+
+  let firebase = res.locals.Firebase;
+  return User.findOne({ uid: firebase.uid })
+    .then((user) => {
+      if (user) {
+        return res.status(200).json({ user });
+      } else {
+        return res.status(401).json({ message: 'user not found' });
+      }
+    })
+    .catch((error) => {
+      Logging.error(error);
+
+      return res.status(500).json({ error });
+    });
 };
 
 const readUser = (req: Request, res: Response, next: NextFunction) => {
@@ -67,6 +113,8 @@ const deleteUser = (req: Request, res: Response, next: NextFunction) => {
 
 export default {
   createUser,
+  validateUser,
+  loginUser,
   readUser,
   readAll,
   updateUser,
