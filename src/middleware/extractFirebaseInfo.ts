@@ -5,8 +5,10 @@ import {Request, Response, NextFunction} from "express"
 const extractFirebaseInfo = (req: Request, res: Response, next: NextFunction) => {
     Logging.info("Validating Firebase token...")
 
+    // message received is "bearer 0xkf145461231efhkdqsdoiug... so we just have the second part"
     let token = req.headers.authorization?.split(" ")[1]
 
+    //si token existe
     if (token){
         firebaseAdmin
             .auth()
