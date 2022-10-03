@@ -44,9 +44,9 @@ const loginUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const validateUser = (req: Request, res: Response, next: NextFunction) => {
-  Logging.info('Token validated, returning user ...');
+  Logging.info('Token validated, returning user ...' + res.locals.firebase.uid);
 
-  let firebase = res.locals.Firebase;
+  let firebase = res.locals.firebase;
   return User.findOne({ uid: firebase.uid })
     .then((user) => {
       if (user) {
