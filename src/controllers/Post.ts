@@ -3,13 +3,13 @@ import mongoose from 'mongoose';
 import Post from '../models/Post';
 
 const createPost = (req: Request, res: Response, next: NextFunction) => {
-  const { title, body, author, date } = req.body;
+  const { title, body, authorId, date } = req.body;
 
   const post = new Post({
     _id: new mongoose.Types.ObjectId(),
     title,
     body,
-    author,
+    authorId,
     date
   });
 
@@ -23,7 +23,7 @@ const readPost = (req: Request, res: Response, next: NextFunction) => {
   const postId = req.params.postId;
 
   return Post.findById(postId)
-    .populate("author")
+    .populate("authorId")
     .then((post) =>
       post
         ? res.status(200).json({ post })
@@ -34,7 +34,7 @@ const readPost = (req: Request, res: Response, next: NextFunction) => {
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
   return Post.find()
-    .populate("author")
+    .populate("authorId")
     .select("-__v")
     .then((posts) => res.status(200).json({ posts }))
     .catch((error) => res.status(500).json({ error }));

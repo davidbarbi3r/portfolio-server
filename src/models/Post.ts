@@ -2,8 +2,8 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IPost {
   title?: string;
-  content: string;
-  author: string;
+  body: string;
+  authorId: string;
   date: Date;
 }
 
@@ -11,9 +11,9 @@ export interface IPostModel extends IPost, Document {}
 
 const PostSchema: Schema = new Schema(
   {
-    title: { type: String},
-    content: { type: String, required: true },
-    author: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    title: { type: String },
+    body: { type: String, required: true },
+    authorId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     date: {type: Date}
   },
   {

@@ -29,18 +29,20 @@ export const Schemas = {
     },
     post: {
         create: Joi.object<IPost>({
-            author: Joi.string()
-                // .regex(/^[0-9a-fA-F]{24}$/) //mongo id is alphanumeric & 24 char long
+            authorId: Joi.string()
+                .regex(/^[0-9a-fA-F]{24}$/) //mongo id is alphanumeric & 24 char long
                 .required(),
             title: Joi.string().required(),
-            content: Joi.string().required()
+            body: Joi.string().required(),
+            date: Joi.date()
         }),
         update: Joi.object<IPost>({
-            author: Joi.string()
-                // .regex(/^[0-9a-fA-F]{24}$/)
+            authorId: Joi.string()
+                .regex(/^[0-9a-fA-F]{24}$/)
                 .required(),
             title: Joi.string().required(),
-            content: Joi.string().required()
+            body: Joi.string().required(),
+            date: Joi.date()
         })
     }
 }

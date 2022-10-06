@@ -5,12 +5,16 @@ import mongoose from 'mongoose';
 import Logging from './library/Logging';
 import postRoutes from "./routes/Post"
 import userRoutes from "./routes/User"
-import firebaseAdmin from "firebase-admin"
+import firebaseAdmin, { ServiceAccount } from "firebase-admin"
 
 const router = express();
 
 // Connect to firebase
-let serviceAccountKey = require("./config/serviceAccount.json")
+const serviceAccountKey: ServiceAccount = {
+    projectId: config.firebase.project_id,
+    clientEmail: config.firebase.client_email,
+    privateKey: config.firebase.private_key
+}
 firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(serviceAccountKey)
 })
