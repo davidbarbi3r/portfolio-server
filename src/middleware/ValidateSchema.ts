@@ -33,6 +33,9 @@ export const Schemas = {
                 .regex(/^[0-9a-fA-F]{24}$/) //mongo id is alphanumeric & 24 char long
                 .required(),
             title: Joi.string().required(),
+            description: Joi.string(),
+            tags: Joi.string(),
+            images: Joi.string(),
             body: Joi.string().required(),
             date: Joi.date()
         }),
@@ -41,6 +44,9 @@ export const Schemas = {
                 .regex(/^[0-9a-fA-F]{24}$/)
                 .required(),
             title: Joi.string().required(),
+            description: Joi.string(),
+            tags: Joi.string(),
+            images: Joi.string(),
             body: Joi.string().required(),
             date: Joi.date()
         })

@@ -4,7 +4,10 @@ export interface IPost {
   title?: string;
   body: string;
   authorId: string;
-  date: Date;
+  date: Date
+  description?: string
+  tags?: string
+  images?: string
 }
 
 export interface IPostModel extends IPost, Document {}
@@ -12,9 +15,12 @@ export interface IPostModel extends IPost, Document {}
 const PostSchema: Schema = new Schema(
   {
     title: { type: String },
+    tags: {type: String},
     body: { type: String, required: true },
+    description: {type: String}, 
     authorId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
-    date: {type: Date}
+    date: {type: Date},
+    images: {type: String}
   },
   {
     timestamps: true,
